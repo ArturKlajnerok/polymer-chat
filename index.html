@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>FunChat</title>
+    <title>FanChat</title>
     <meta name="description" content="Communication hub for fans">
 
     <link rel="icon" href="/images/favicon.ico">
@@ -27,12 +27,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="FunChat">
+    <meta name="application-name" content="FanChat">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FunChat">
+    <meta name="apple-mobile-web-app-title" content="FanChat">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" href="/images/manifest/icon_funchat_48x48.png">
@@ -89,7 +89,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </script>
 
-    <link rel="import" href="/src/my-app.html">
+    <link rel="import" href="/bower_components/polymerfire/firebase-app.html">
+    <link rel="import" href="/src/funchat-app.html">
 
     <style>
       body {
@@ -101,8 +102,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
   </head>
+
   <body>
-    <my-app></my-app>
-    <!-- Built with love using Polymer Starter Kit -->
+    <!-- Configure Firebase app: -->
+    <firebase-app
+      name="FanChat"
+      api-key="AIzaSyAkBNXAmtZ9ze43sTi4ya0PE9O9Y1LLEpI"
+      auth-domain="fanchat-f7754.firebaseapp.com"
+      database-url="https://fanchat-f7754.firebaseio.com">
+    </firebase-app>
+
+    <funchat-app></funchat-app>
   </body>
 </html>
