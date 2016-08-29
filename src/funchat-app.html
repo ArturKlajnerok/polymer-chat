@@ -19,7 +19,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
 <link rel="import" href="my-icons.html">
 
 <dom-module id="funchat-app">
@@ -38,6 +41,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
+      }
+
+      paper-button {
+        font-size: 14px;
+        text-transform: none;
       }
 
       .drawer-list {
@@ -73,7 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
+        <app-toolbar>[[getDrawerTitle(user)]]</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view1" href="/view1">View One</a>
           <a name="view2" href="/view2">View Two</a>
@@ -88,6 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div main-title>FanChat</div>
+            <paper-button raised on-tap="signIn">[[getSignInText(signedIn)]]</paper-button>
           </app-toolbar>
         </app-header>
 
@@ -103,6 +112,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+
+    <firebase-auth
+      id="auth"
+      app-name="FanChat"
+      provider="google"
+      signed-in="{{signedIn}}"
+      user="{{user}}">
+    </firebase-auth>
   </template>
 
   <script>
@@ -114,6 +131,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged'
+        },
+        signedIn: {
+          type: Boolean,
+          notify: true,
+          value: false
         }
       },
 
@@ -133,6 +155,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _showPage404: function() {
         this.page = 'view404';
+      },
+
+      getSignInText: function(signedIn) {
+        return signedIn ? 'Sign out' : 'Sign In';
+      },
+
+
+      getDrawerTitle: function(user) {
+        if (user) {
+          return user.displayName + ' channels';
+        }
+        return 'Random channels'
+      },
+
+      signIn: function() {
+        this.$.auth.signInWithPopup()
+          .then(function(response) {
+            console.log(response);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     });
   </script>
