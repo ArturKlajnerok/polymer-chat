@@ -64,6 +64,7 @@
 
       .drawer-list a.iron-selected {
         color: black;
+        background: #eee;
 
         font-weight: bold;
       }
@@ -80,10 +81,16 @@
       <!-- Drawer content -->
       <app-drawer>
         <app-toolbar>[[getDrawerTitle(user)]]</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+        <iron-selector selected="[[channel]]" attr-for-selected="name" class="drawer-list" role="navigation" on-iron-select="selectedChannel">
+          <template is="dom-repeat" items="[[channels]]" as="channel">
+            <a name="[[channel.name]]"
+              href="/channel/[[channel.name]]"># [[channel.name]]</a>
+          </template>
+          <!--
           <a name="view1" href="/view1">Channel One</a>
           <a name="view2" href="/view2">Channel Two</a>
           <a name="view3" href="/view3">Channel Three</a>
+          -->
         </iron-selector>
       </app-drawer>
 
@@ -196,6 +203,10 @@
         console.log(this.$.editor);
         console.log(this.user);
         this.$.editor.open();
+      },
+
+      selectedChannel: function(event, item) {
+        console.log(item.item.name);
       },
 
       commitChange: function(event) {
