@@ -87,8 +87,8 @@
 
     <paper-card id="channel">
       <p class="header">Create a channel</p>
-      <paper-input label="Channel Name"></paper-input>
-      <paper-input label="Description"></paper-input>
+      <paper-input id="name" label="Channel Name"></paper-input>
+      <paper-input id="description" label="Description"></paper-input>
       <paper-textarea label="autoresizing textarea input"></paper-textarea>
     </paper-card>
 
@@ -128,11 +128,15 @@
 
       create() {
         this._setOpened(true);
-        this.channel = { title: '', body: '' };
+        this.channel = { name: '', description: '' };
+        this.$.name.value = '';
+        this.$.description.value = '';
         this.transitionInFrom(this.getBoundingClientRect());
       },
 
       save() {
+        this.channel.name = this.$.name.value;
+        this.channel.description = this.$.description.value;
         this.close('save');
       },
 
