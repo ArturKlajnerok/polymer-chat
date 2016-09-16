@@ -122,6 +122,20 @@
       on-close="commitChange">
     </new-channel>
 
+    <firebase-document
+      id="document"
+      app-name="FanChat"
+      path="[[editableChannelId]]"
+      data="{{editableChannel}}">
+    </firebase-document>
+
+    <firebase-query
+      id="query"
+      app-name="FanChat"
+      path="/channels"
+      data="{{channels}}">
+    </firebase-query>
+
     <firebase-auth
       id="auth"
       app-name="FanChat"
@@ -182,6 +196,25 @@
         console.log(this.$.editor);
         console.log(this.user);
         this.$.editor.open();
+      },
+
+      commitChange: function(event) {
+        var changeCommits;
+
+        if (this.$.document.isNew &&
+            (this.editableChannel.name ||
+             this.editableChannel.description)) {
+
+          changeCommits = this.$.document.save('/channels').then(() => {
+            this.$.document.reset();
+          });
+        }
+
+        if (this.$.query && this.$.query.refresh) {
+          changeCommits.then(() => {
+            this.$.query.refresh();
+          });
+        }
       },
 
       signIn: function() {
